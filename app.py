@@ -8,7 +8,7 @@ import streamlit as st
 # import numpy
 st.write('hello word')
 img1 = open('image4.jpg')
-img1 = img1.resize((600, 200))
+img1 = img1.resize((150, 150))
 st.image(img1, use_column_width=False)
 
 # ## --- SELECTIONS DES DONNEES --- ## 
