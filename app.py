@@ -48,19 +48,19 @@ prop = st.selectbox("Zone d'habitation", prop_options,
                     format_func=lambda x: prop_display[x])
 
 # # Applicant Monthly Income
-# mon_income = float(st.number_input("Revenus demandeur", value=0))
-# # Credit history
-# # credit_display = ('Yes', 'No')
-# credit_display = "Yes"
-# # credit_hst_options = list(range(len(credit_display)))
-# # credit_hst = st.selectbox("Travailleur independant", credit_hst_options,
-# #                         format_func=lambda x: credit_display[x])
-# # Co-Applicant Monthly Income
-# co_mon_income = float(st.number_input("Revenues co-demandeur", value=0))
-# # Loan AMount
-# loan_amt = float(st.number_input("Montant du credit", value=0))
-# # loan duration
-# dur = float(st.number_input("Durée du credit", value=0))
+mon_income = float(st.number_input("Revenus demandeur", value=0))
+# Credit history
+# credit_display = ('Yes', 'No')
+credit_display = "Yes"
+# credit_hst_options = list(range(len(credit_display)))
+# credit_hst = st.selectbox("Travailleur independant", credit_hst_options,
+#                         format_func=lambda x: credit_display[x])
+# Co-Applicant Monthly Income
+co_mon_income = float(st.number_input("Revenues co-demandeur", value=0))
+# Loan AMount
+loan_amt = float(st.number_input("Montant du credit", value=0))
+# loan duration
+dur = float(st.number_input("Durée du credit", value=0))
 
 # ## ----------------------------------------------------- ## 
 
