@@ -14,8 +14,8 @@ from preprocessor import feature_encoder
 
 
 img1 = open('image4.jpg')
-img1 = img1.resize((150, 150))
-st.image(img1, use_column_width=False)
+# img1 = img1.resize((150, 150))
+# st.image(img1, use_column_width=False)
 
 # ## --- SELECTIONS DES DONNEES --- ## 
 
@@ -56,12 +56,13 @@ prop = st.selectbox("Zone d'habitation", prop_options,
 
 # # Applicant Monthly Income
 mon_income = float(st.number_input("Revenus demandeur", value=0))
+
 # Credit history
 credit_display = ('Yes', 'No')
-credit_display = "Yes"
 credit_hst_options = list(range(len(credit_display)))
-credit_hst = st.selectbox("Travailleur independant", credit_hst_options,
-                        format_func=lambda x: credit_display[x])
+credit_hst = st.selectbox("Autre crédit en cours", credit_hst_options,
+                          format_func=lambda x: credit_display[x])
+
 # Co-Applicant Monthly Income
 co_mon_income = float(st.number_input("Revenues co-demandeur", value=0))
 # Loan AMount
@@ -71,8 +72,39 @@ dur = float(st.number_input("Durée du credit", value=0))
 
 # ## ----------------------------------------------------- ## 
 
+# if st.button("Submit"):
+# #     ## --- TRAITEMENT DES DONNEES --- ##
+#     model = joblib.load('./models/clf_model.joblib')
+#     COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
+#     'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
+#     'Loan_Amount_Term', 'Credit_History', 'Property_Area'
+#     ]
+#     # dep = 3 if dep == "3+" else int(dep)
+#     df = pd.DataFrame(data=[[gen, mar, dep, edu, emp, mon_income, 
+#                             co_mon_income, loan_amt, dur, credit_display, prop]], columns=COLUMNS_NAMES)
+
+#     # Process raw data
+#     data = cleaner(df)
+#     data_prcd = feature_encoder(data)
+    
+#     st.table(data_prcd)
+
+#     # Unit testing on first feature engineering model improvement exp run #
+#     # preds, probas = feature_engineering(X, y, lg_pipe)
+#     # ------------------------------ ##
+    
+# #     ## --- PREDICTION --- ##
+#     pred = model.predict(data_prcd)
+#     proba = model.predict_proba(data_prcd)
+    
+#     if not pred == 0:
+#         st.text(f"Le demandeur est eligble au credit avec un indicateur de confiance de {proba}")
+#     else:
+#         st.text(f"Le demandeur n'est pas eligble au credit avec un indicateur de confiance de {proba}")
+
+
 if st.button("Submit"):
-#     ## --- TRAITEMENT DES DONNEES --- ##
+    #     ## --- TRAITEMENT DES DONNEES --- ##
     model = joblib.load('./models/clf_model.joblib')
     COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
     'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
@@ -82,23 +114,28 @@ if st.button("Submit"):
     df = pd.DataFrame(data=[[gen, mar, dep, edu, emp, mon_income, 
                             co_mon_income, loan_amt, dur, credit_display, prop]], columns=COLUMNS_NAMES)
 
+    st.write(df)
+
+    
     # Process raw data
     data = cleaner(df)
+    st.write(type(data))
     data_prcd = feature_encoder(data)
     
-    st.table(data_prcd)
-
-    # Unit testing on first feature engineering model improvement exp run #
-    # preds, probas = feature_engineering(X, y, lg_pipe)
-    # ------------------------------ ##
+    st.write(type(data_prcd))
     
-#     ## --- PREDICTION --- ##
-    pred = model.predict(data_prcd)
-    proba = model.predict_proba(data_prcd)
-    
-    if not pred == 0:
-        st.text(f"Le demandeur est eligble au credit avec un indicateur de confiance de {proba}")
-    else:
-        st.text(f"Le demandeur n'est pas eligble au credit avec un indicateur de confiance de {proba}")
+#     st.table(data_prcd)
 
+#     # Unit testing on first feature engineering model improvement exp run #
+#     # preds, probas = feature_engineering(X, y, lg_pipe)
+#     # ------------------------------ ##
+    
+# #     ## --- PREDICTION --- ##
+#     pred = model.predict(data_prcd)
+#     proba = model.predict_proba(data_prcd)
+    
+#     if not pred == 0:
+#         st.text(f"Le demandeur est eligble au credit avec un indicateur de confiance de {proba}")
+#     else:
+#         st.text(f"Le demandeur n'est pas eligble au credit avec un indicateur de confiance de {proba}")
 

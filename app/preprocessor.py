@@ -78,7 +78,7 @@ def feature_encoder(X, ctg_fts = categorical_fts):
     onehot_df = pd.get_dummies(X[ctg_fts[-1]])
     label_df = MultiColumnLabelEncoder(columns = ctg_fts[:-1]).fit_transform(X)
     label_df = label_df.drop(ctg_fts[-1], axis=1)
-
+    
     X = label_df.join(onehot_df)
     # y = le.fit_transform(y)
 
