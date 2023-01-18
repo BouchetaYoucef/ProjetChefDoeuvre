@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-# from preprocessor import cleaner, pipeline_constructor, feature_encoder, feature_engineering
+from preprocessor import cleaner, pipeline_constructor, feature_encoder, feature_engineering
 import pickle
 import pandas as pd
 import numpy as np
@@ -26,7 +26,7 @@ mar = st.selectbox("Mariée", mar_options,
 # # No of dependets
 dep_display = ('0', '1', '2', '3+')
 dep_options = list(range(len(dep_display)))
-dep = st.selectbox("Nombre de salariés", dep_options,
+dep = st.selectbox("Nombre d'enfant", dep_options,
                    format_func=lambda x: dep_display[x])
 
 # # For edu
@@ -50,11 +50,11 @@ prop = st.selectbox("Zone d'habitation", prop_options,
 # # Applicant Monthly Income
 mon_income = float(st.number_input("Revenus demandeur", value=0))
 # Credit history
-# credit_display = ('Yes', 'No')
+credit_display = ('Yes', 'No')
 credit_display = "Yes"
-# credit_hst_options = list(range(len(credit_display)))
-# credit_hst = st.selectbox("Travailleur independant", credit_hst_options,
-#                         format_func=lambda x: credit_display[x])
+credit_hst_options = list(range(len(credit_display)))
+credit_hst = st.selectbox("Travailleur independant", credit_hst_options,
+                        format_func=lambda x: credit_display[x])
 # Co-Applicant Monthly Income
 co_mon_income = float(st.number_input("Revenues co-demandeur", value=0))
 # Loan AMount
@@ -75,23 +75,23 @@ if st.button("Submit"):
     df = pd.DataFrame(data=[[gen, mar, dep, edu, emp, mon_income, 
                             co_mon_income, loan_amt, dur, credit_display, prop]], columns=COLUMNS_NAMES)
 
-#     # Process raw data
-#     data = cleaner(df)
-#     data_prcd = feature_encoder(data)
+    # Process raw data
+    data = cleaner(df)
+    data_prcd = feature_encoder(data)
     
-#     st.table(data_prcd)
+    st.table(data_prcd)
 
-#     # Unit testing on first feature engineering model improvement exp run #
-#     # preds, probas = feature_engineering(X, y, lg_pipe)
-#     ## ------------------------------ ##
+    # Unit testing on first feature engineering model improvement exp run #
+    # preds, probas = feature_engineering(X, y, lg_pipe)
+    # ------------------------------ ##
     
 #     ## --- PREDICTION --- ##
-#     pred = model.predict(data_prcd)
-#     proba = model.predict_proba(data_prcd)
+    pred = model.predict(data_prcd)
+    proba = model.predict_proba(data_prcd)
     
-#     if not pred == 0:
-#         st.text(f"Le demandeur est eligble au credit avec un indicateur de confiance de {proba}")
-#     else:
-#         st.text(f"Le demandeur n'est pas eligble au credit avec un indicateur de confiance de {proba}")
+    if not pred == 0:
+        st.text(f"Le demandeur est eligble au credit avec un indicateur de confiance de {proba}")
+    else:
+        st.text(f"Le demandeur n'est pas eligble au credit avec un indicateur de confiance de {proba}")
 
 
