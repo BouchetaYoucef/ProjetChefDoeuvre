@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-from preprocessor import cleaner, pipeline_constructor, feature_encoder, feature_engineering
+# from preprocessor import cleaner, pipeline_constructor, feature_encoder, feature_engineering
 import pickle
 import pandas as pd
 import numpy as np
