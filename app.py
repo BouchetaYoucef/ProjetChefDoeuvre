@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-from preprocessor import cleaner, pipeline_constructor, feature_encoder, feature_engineering
+from preprocessor import cleaner, pipeline_constructor, feature_encoder, feature_engineeringS
 import pickle
 import pandas as pd
 import numpy as np
@@ -87,12 +87,12 @@ if st.button("Submit"):
     # ------------------------------ ##
     
 #     ## --- PREDICTION --- ##
-    pred = model.predict(data_prcd)
-    proba = model.predict_proba(data_prcd)
+    # pred = model.predict(data_prcd)
+    # proba = model.predict_proba(data_prcd)
     
-    if not pred == 0:
-        st.text(f"Le demandeur est eligble au credit avec un indicateur de confiance de {proba}")
-    else:
-        st.text(f"Le demandeur n'est pas eligble au credit avec un indicateur de confiance de {proba}")
+    # if not pred == 0:
+    #     st.text(f"Le demandeur est eligble au credit avec un indicateur de confiance de {proba}")
+    # else:
+    #     st.text(f"Le demandeur n'est pas eligble au credit avec un indicateur de confiance de {proba}")
 
 
