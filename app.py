@@ -1,14 +1,14 @@
 import streamlit as st
-# from PIL import Image
+from PIL import Image
 # from preprocessor import cleaner, pipeline_constructor, feature_encoder, feature_engineering
-# import pickle
-# import pandas as pd
-# import numpy as np
-# import joblib
-# import numpy
-# img1 = open('image4.jpg')
-# img1 = img1.resize((150, 150))
-# st.image(img1, use_column_width=False)
+import pickle
+import pandas as pd
+import numpy as np
+import joblib
+import numpy
+img1 = open('image4.jpg')
+img1 = img1.resize((150, 150))
+st.image(img1, use_column_width=False)
 
 # ## --- SELECTIONS DES DONNEES --- ## 
 
@@ -64,16 +64,16 @@ dur = float(st.number_input("Durée du credit", value=0))
 
 # ## ----------------------------------------------------- ## 
 
-# if st.button("Submit"):
+if st.button("Submit"):
 #     ## --- TRAITEMENT DES DONNEES --- ##
-#     model = joblib.load('./models/clf_model.joblib')
-#     COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
-#     'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
-#     'Loan_Amount_Term', 'Credit_History', 'Property_Area'
-#     ]
-#     # dep = 3 if dep == "3+" else int(dep)
-#     df = pd.DataFrame(data=[[gen, mar, dep, edu, emp, mon_income, 
-#                             co_mon_income, loan_amt, dur, credit_display, prop]], columns=COLUMNS_NAMES)
+    model = joblib.load('./models/clf_model.joblib')
+    COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
+    'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
+    'Loan_Amount_Term', 'Credit_History', 'Property_Area'
+    ]
+    # dep = 3 if dep == "3+" else int(dep)
+    df = pd.DataFrame(data=[[gen, mar, dep, edu, emp, mon_income, 
+                            co_mon_income, loan_amt, dur, credit_display, prop]], columns=COLUMNS_NAMES)
 
 #     # Process raw data
 #     data = cleaner(df)
