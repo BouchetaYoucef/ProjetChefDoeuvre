@@ -4,7 +4,7 @@ from PIL import Image
 import pickle
 import pandas as pd
 import numpy as np
-import joblib
+# import joblib
 import numpy
 img1 = open('image4.jpg')
 img1 = img1.resize((150, 150))
