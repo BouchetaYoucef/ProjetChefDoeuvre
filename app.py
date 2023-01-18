@@ -18,34 +18,34 @@ gen_options = list(range(len(gen_display)))
 gen = st.selectbox("Genre", gen_options, format_func=lambda x: gen_display[x])
 
 # # For Marital Status
-# mar_display = ('No', 'Yes')
-# mar_options = list(range(len(mar_display)))
-# mar = st.selectbox("Mariée", mar_options,
-#                    format_func=lambda x: mar_display[x])
+mar_display = ('No', 'Yes')
+mar_options = list(range(len(mar_display)))
+mar = st.selectbox("Mariée", mar_options,
+                   format_func=lambda x: mar_display[x])
 
 # # No of dependets
-# dep_display = ('0', '1', '2', '3+')
-# dep_options = list(range(len(dep_display)))
-# dep = st.selectbox("Nombre de salariés", dep_options,
-#                    format_func=lambda x: dep_display[x])
+dep_display = ('0', '1', '2', '3+')
+dep_options = list(range(len(dep_display)))
+dep = st.selectbox("Nombre de salariés", dep_options,
+                   format_func=lambda x: dep_display[x])
 
 # # For edu
-# edu_display = ('Not Graduate', 'Graduate')
-# edu_options = list(range(len(edu_display)))
-# edu = st.selectbox("Education", edu_options,
-#                    format_func=lambda x: edu_display[x])
+edu_display = ('Not Graduate', 'Graduate')
+edu_options = list(range(len(edu_display)))
+edu = st.selectbox("Education", edu_options,
+                   format_func=lambda x: edu_display[x])
 
 # # For emp status
-# emp_display = ('Yes', 'No')
-# emp_options = list(range(len(emp_display)))
-# emp = st.selectbox("Travailleur independant", emp_options,
-#                    format_func=lambda x: emp_display[x])
+emp_display = ('Yes', 'No')
+emp_options = list(range(len(emp_display)))
+emp = st.selectbox("Travailleur independant", emp_options,
+                   format_func=lambda x: emp_display[x])
 
 # # For Property status
-# prop_display = ('Rural', 'Semi-Urban', 'Urban')
-# prop_options = list(range(len(prop_display)))
-# prop = st.selectbox("Zone d'habitation", prop_options,
-#                     format_func=lambda x: prop_display[x])
+prop_display = ('Rural', 'Semi-Urban', 'Urban')
+prop_options = list(range(len(prop_display)))
+prop = st.selectbox("Zone d'habitation", prop_options,
+                    format_func=lambda x: prop_display[x])
 
 # # Applicant Monthly Income
 # mon_income = float(st.number_input("Revenus demandeur", value=0))
