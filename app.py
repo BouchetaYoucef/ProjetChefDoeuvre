@@ -1,14 +1,14 @@
 import streamlit as st
 from PIL import Image
-# from preprocessor import cleaner, pipeline_constructor, feature_encoder, feature_engineering
+from preprocessor import cleaner, pipeline_constructor, feature_encoder, feature_engineeringS
 import pickle
 import pandas as pd
 import numpy as np
 import joblib
 import numpy
-img1 = open('image4.jpg')
-img1 = img1.resize((150, 150))
-st.image(img1, use_column_width=False)
+# img1 = open('image4.jpg')
+# img1 = img1.resize((150, 150))
+# st.image(img1, use_column_width=False)
 
 # ## --- SELECTIONS DES DONNEES --- ## 
 
