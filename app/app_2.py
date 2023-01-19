@@ -1,4 +1,4 @@
-import streamlit as
+import streamlit as st
 from PIL import Image
 import pickle
 from sklearn.preprocessing import LabelEncoder
@@ -32,7 +32,7 @@ def check_password():
 
     def password_entered():
         """Checks whether a password entered by the user is correct."""
-        if st.session_state["password"] == valid_pwd and st.session_state["login"] == valid_login:
+        if  st.session_state["password"] == valid_pwd and st.session_state["login"] == valid_login:
             st.session_state["password_correct"] = True 
             del st.session_state["password"]  # don't store password
             del st.session_state["login"]
@@ -62,7 +62,7 @@ def check_password():
         # Password correct.
         return True
 
-st.session_state["datai"] = {}
+        st.session_state["datai"] = {}
 
 
 
