@@ -70,6 +70,9 @@ loan_amt = float(st.number_input("Montant du credit", value=0))
 # loan duration
 dur = float(st.number_input("Durée du credit", value=0))
 
+
+## rajouter les 2 input manquants
+
 # ## ----------------------------------------------------- ## 
 
 # if st.button("Submit"):
@@ -105,14 +108,14 @@ dur = float(st.number_input("Durée du credit", value=0))
 
 if st.button("Submit"):
     #     ## --- TRAITEMENT DES DONNEES --- ##
-    model = joblib.load('./models/clf_model.joblib')
+    model = joblib.load('./models/model.pkl')
     COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
     'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
-    'Loan_Amount_Term', 'Credit_History', 'Property_Area'
+    'Loan_Amount_Term', 'Credit_History', 'Property_Area', #rajouter les 2 columns manquantes"
     ]
     # dep = 3 if dep == "3+" else int(dep)
     df = pd.DataFrame(data=[[gen, mar, dep, edu, emp, mon_income, 
-                            co_mon_income, loan_amt, dur, credit_display, prop]], columns=COLUMNS_NAMES)
+                            co_mon_income, loan_amt, dur, credit_display, prop, le nom des 2 boutons input]], columns=COLUMNS_NAMES)
 
     st.write(df)
 

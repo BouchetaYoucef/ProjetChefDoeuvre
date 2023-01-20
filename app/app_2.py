@@ -2,6 +2,13 @@ import streamlit as st
 from PIL import Image
 import pickle
 from sklearn.preprocessing import LabelEncoder
+from PIL import Image
+from preprocessor import cleaner, pipeline_constructor, feature_encoder, feature_engineering
+import pickle
+import pandas as pd
+import numpy as np
+import joblib
+import numpy
 
 import yaml
 from pathlib import Path
@@ -61,75 +68,66 @@ def check_password():
     else:
         # Password correct.
         return True
-
+    
         st.session_state["datai"] = {}
 
-
-
-
 if check_password():
-    
-    model = pickle.load(open('pickle_model/model_pkl.pickle', 'rb'))
-
-
-    
+    model = pickle.load(open('../classifier.pkl', 'rb'))
     st.title("Prédiction de prêt bancaire")
 
-    ## Account No
-    account_no = st.text_input('Numéro du compte')
+    ## --- SELECTIONS DES DONNEES --- ## 
 
-    ## Full Name
-    fn = st.text_input('Nom / Prénom')
-
-    ## For gender
-    gen_display = ('Femme','Homme')
+    # For gender
+    gen_display = ('Female', 'Male')
     gen_options = list(range(len(gen_display)))
-    gen = st.selectbox("Genre",gen_options, format_func=lambda x: gen_display[x])
+    gen = st.selectbox("Genre", gen_options, format_func=lambda x: gen_display[x])
 
-    ## For Marital Status
-    mar_display = ('Non','Oui')
+    # For Marital Status
+    mar_display = ('No', 'Yes')
     mar_options = list(range(len(mar_display)))
-    mar = st.selectbox("Etat civil", mar_options, format_func=lambda x: mar_display[x])
+    mar = st.selectbox("Status civil", mar_options,
+                    format_func=lambda x: mar_display[x])
 
-    ## No of dependets
-    dep_display = ('Non','Un','Deux','Plus de deux')
+    # No of dependets
+    dep_display = ('0', '1', '2', '3+')
     dep_options = list(range(len(dep_display)))
-    dep = st.selectbox("Dépendents",  dep_options, format_func=lambda x: dep_display[x])
+    dep = st.selectbox("Nombre d'enfant(s)", dep_options,
+                    format_func=lambda x: dep_display[x])
 
-    ## For edu
-    edu_display = ('Non diplômé','Diplômé')
+    # For edu
+    edu_display = ('Not Graduate', 'Graduate')
     edu_options = list(range(len(edu_display)))
-    edu = st.selectbox("Education",edu_options, format_func=lambda x: edu_display[x])
+    edu = st.selectbox("Education", edu_options,
+                    format_func=lambda x: edu_display[x])
 
-    ## For emp status
-    emp_display = ('Job','Business')
+    # For emp status
+    emp_display = ('Yes', 'No')
     emp_options = list(range(len(emp_display)))
-    emp = st.selectbox("Employment Status",emp_options, format_func=lambda x: emp_display[x])
+    emp = st.selectbox("Travailleur independant", emp_options,
+                    format_func=lambda x: emp_display[x])
 
-    ## For Property status
-    prop_display = ('Rural','Semi-Urban','Urban')
+    # For Property status
+    prop_display = ('Rural', 'Semi-Urban', 'Urban')
     prop_options = list(range(len(prop_display)))
-    prop = st.selectbox("Endroit de résidence",prop_options, format_func=lambda x: prop_display[x])
+    prop = st.selectbox("Zone d'habitation", prop_options,
+                        format_func=lambda x: prop_display[x])
 
-    ## For Credit Score
-    cred_display = ('0','1')
-    cred_options = list(range(len(cred_display)))
-    cred = st.selectbox("Historique de prêt",cred_options, format_func=lambda x: cred_display[x])
-
-    ## Applicant Monthly Income
-    mon_income = st.number_input("Salaire mensuelle du demandeur",value=0)
-
-    ## Co-Applicant Monthly Income
-    co_mon_income = st.number_input("Salaire mensuelle du codemandeur)",value=0)
-
-    ## Loan AMount
-    loan_amt = st.number_input("Prix du prêt",value=0)
-
-    ## loan duration
-    dur_display = ['2 Mois','6 Mois','8 Mois','1 Année','16 Mois']
-    dur_options = range(len(dur_display))
-    dur = st.selectbox("Durée du prêt",dur_options, format_func=lambda x: dur_display[x])
-
+    # Applicant Monthly Income
+    mon_income = float(st.number_input("Revenus demandeur", value=0))
+    # Credit history
+    credit_display = ('Yes', 'No')
+    credit_hst_options = list(range(len(credit_display)))
+    credit_hst = st.selectbox("Autre crédit en cours", credit_hst_options,
+                            format_func=lambda x: credit_display[x])
+    # Co-Applicant Monthly Income
+    co_mon_income = float(st.number_input("Revenues co-demandeur", value=0))
+    # Loan AMount
+    loan_amt = float(st.number_input("Montant du credit", value=0))
+    # loan duration
+    dur = float(st.number_input("Durée du credit", value=0))
+    
+    #########################################################################
+    
     if st.button("Prédiction du prêt"):
         duration = 0
         if dur == 0:
@@ -142,15 +140,33 @@ if check_password():
             duration = 360
         if dur == 4:
             duration = 480
-        features = [[gen, mar, dep, edu, emp, mon_income, co_mon_income, loan_amt, duration, cred, prop]]
-        print(features)
+
+        ## --- TRAITEMENT DES DONNEES --- ##
+        model = joblib.load('./models/clf_model.joblib')
+        COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
+        'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
+        'Loan_Amount_Term', 'Credit_History', 'Property_Area'
+        ]
+        # dep = 3 if dep == "3+" else int(dep)
+        df = pd.DataFrame(data=[[gen, mar, dep, edu, emp, mon_income, 
+                                co_mon_income, loan_amt, dur, credit_hst, prop]], columns=COLUMNS_NAMES)
+
+        # Process raw data
+        data = cleaner(df)
+        data_prcd = feature_encoder(data)
         
-        ##### TODO #####
+        st.table(data_prcd)
+
+        # preds, probas = feature_engineering(X, y, lg_pipe)
+        ## ------------------------------ ##
+        
+        # ##### TODO #####
         # exécuter les fonctions de preprocessing
         # def première_fonction(features):
         def features_encoding(df_clean):
            lBE = LabelEncoder()
-           categ = ["Loan_Status","Gender", "Married", "Dependents", "Education", "Self_Employed", "Property_Area"]
+           categ = ["Gender", "Married", "Dependents",
+                    "Education", "Self_Employed","ApplicantIncome","CoapplicantIncome","LoanAmount","Loan_Amount_Term","Credit_History","Property_Area"]
            df_clean[categ] = df_clean[categ].apply(lBE.fit_transform)
            return df_clean  
        
@@ -160,21 +176,15 @@ if check_password():
            df_clean_encoded['Loan_Status'] = le.fit_transform(df_clean_encoded['Loan_Status'])
            return df_clean_encoded
         
+        # --- RETURNER LA PREDICTION AVEC UNE ALERTE PERTINENTE --- ###
+        pred = model.predict(data_prcd)
+        proba = model.predict_proba(data_prcd)
         
-        
-        prediction = model.predict(features)
-        lc = [str(i) for i in prediction]
-        ans = int("".join(lc))
-        if ans == 0:
-            st.error(
-                "Bonjour: " + fn +" || "
-                "Numéro de compte: "+account_no +' || '
-                'Suite à nos calcul vous ne pouvez pas prétendre à un prêt bancaire.'
-            )
+        if pred == 0:
+            st.error('Suite à nos calcul vous ne pouvez pas prétendre à un prêt bancaire.')
         else:
-            st.success(
-                "Bonjour: " + fn +" || "
-                "Numéro de compte "+account_no +' || '
-                'Félécitations! Vous pouvez prétendre à un prêt bancaire !'
-            )
+            st.success('Félécitations! Vous pouvez prétendre à un prêt bancaire !' )
+        ## --------------------------------------------------------- ###
+            
+            
 

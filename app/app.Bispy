@@ -1,0 +1,52 @@
+import streamlit as st
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
+
+# Chargement du modèle entraîné
+model = joblib.load("classifier.pkl")
+
+# Fonction pour prédire l'octroi de crédit
+def predict_loan(data):
+    # Encodage des variables catégorielles
+    le = LabelEncoder()
+    data["Gender"] = le.fit_transform(data["Gender"])
+    data["Married"] = le.fit_transform(data["Married"])
+    data["Education"] = le.fit_transform(data["Education"])
+    data["Self_Employed"] = le.fit_transform(data["Self_Employed"])
+    data["Property_Area"] = le.fit_transform(data["Property_Area"])
+
+    # Prédiction de l'octroi de crédit
+    prediction = model.predict(data)
+    return "Prêt accordé" if prediction == 1 else "Prêt refusé"
+
+# Interface utilisateur avec Streamlit
+st.title("Prédiction de prêts bancaires")
+
+# Saisie des variables par l'utilisateur
+gender = st.selectbox("Genre", ["Female", "Male"])
+marital_status = st.selectbox("Status marital", ["Married", "Single"])
+dependents = st.selectbox("Nombre d'enfants", ["0", "1", "2", "3+"])
+education = st.selectbox("Niveau d'étude", ["Graduate", "Not Graduate"])
+self_employed = st.selectbox("Travailleur indépendant", ["Yes", "No"])
+property_area = st.selectbox("Zone d'habitation", ["Urban", "Rural", "Semiurban"])
+applicant_income = st.number_input("Revenu demandeur", value=0)
+coapplicant_income = st.number_input("Revenu co-demandeur", value=0)
+loan_amount = st.number_input("Montant du crédit", value=0)
+loan_term = st.number_input("Durée du crédit", value=0)
+
+# Prédiction de l'octroi de crédit
+if st.button("Prédire"):
+    data = {
+        "Gender": gender,
+        "Married": marital_status,
+        "Dependents": dependents,
+        "Education": education,
+        "Self_Employed": self_employed,
+        "Property_Area": property_area,
+        "ApplicantIncome": applicant_income,
+        "CoapplicantIncome": coapplicant_income,
+        "LoanAmount": loan_amount,
+        "Loan_Amount_Term": loan_term
+    }
+    result = predict_loan(pd.DataFrame([data
