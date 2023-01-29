@@ -43,10 +43,10 @@ def check_password():
     if "password_correct" not in st.session_state:
         # First run, show input for password.
         st.text_input(
-            "Login", on_change=password_entered, key="youcef"
+            "Login", on_change=password_entered, key="login"
         )
         st.text_input(
-            "Password", type="password", on_change=password_entered, key="boucheta"
+            "Password", type="password", on_change=password_entered, key="password"
         )
         return False
     elif not st.session_state["password_correct"]:
@@ -68,7 +68,7 @@ if check_password():
 
     ## Application ##
     img1 = Image.open('image4.jpg')
-    img1 = img1.resize((600, 200))
+    img1 = img1.resize((150, 200))
     st.image(img1, use_column_width=False)
 
     ## --- SELECTIONS DES DONNEES --- ## 
