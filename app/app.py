@@ -1,141 +1,144 @@
-import joblib
-import numpy
-import pickle
-import pandas as pd
-import numpy as np
 import streamlit as st
 from PIL import Image
+import pickle
+import pandas as pd
 
-#Import preprocess
-from preprocessor import cleaner
-from preprocessor import feature_encoder
-# from preprocessor import pipeline_constructor
-# from preprocessor import feature_engineering
+## Variables d'environnement (secrets sur streamlit cloud) ##
+valid_login = st.secrets["VALID_LOGIN"]
+valid_password = st.secrets["VALID_PASSWORD"]
 
+## Fonctions ##
+def loading_model():
+    infile = open('./model.pkl','rb')
+    model = pickle.load(infile)
+    infile.close()
+    return model
 
-img1 = open('image4.jpg')
-# img1 = img1.resize((150, 150))
-# st.image(img1, use_column_width=False)
+def create_user_dataframe(data):
+        COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
+                         'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
+                         'Loan_Amount_Term', 'Credit_History', 'Property_Area']
 
-# ## --- SELECTIONS DES DONNEES --- ## 
+        if data[-2] == "Yes":
+            data[-2]  = 1.0
+        if data[-2]  == "No":
+            data[-2]  = 0.0
 
-# # For gender
-gen_display = ('Female', 'Male')
-gen_options = list(range(len(gen_display)))
-gen = st.selectbox("Genre", gen_options, format_func=lambda x: gen_display[x])
+        df = pd.DataFrame([data], columns=COLUMNS_NAMES)
 
-# # For Marital Status
-mar_display = ('No', 'Yes')
-mar_options = list(range(len(mar_display)))
-mar = st.selectbox("Mariée", mar_options,
-                   format_func=lambda x: mar_display[x])
+        return df
 
-# # No of dependents
-dep_display = ('0', '1', '2', '3+')
-dep_options = list(range(len(dep_display)))
-dep = st.selectbox("Nombre d'enfant", dep_options,
-                   format_func=lambda x: dep_display[x])
+def check_password():
+    """Returns `True` if the user had the correct password."""
 
-# # For edu
-edu_display = ('Not Graduate', 'Graduate')
-edu_options = list(range(len(edu_display)))
-edu = st.selectbox("Education", edu_options,
-                   format_func=lambda x: edu_display[x])
+    def password_entered():
+        """Checks whether a password entered by the user is correct."""
+        if st.session_state["password"] == valid_password and st.session_state["login"] == valid_login:
+            st.session_state["password_correct"] = True 
+            del st.session_state["password"]  # don't store password
+            del st.session_state["login"]
+        else:
+            st.session_state["password_correct"] = False
 
-# # For emp status
-emp_display = ('Yes', 'No')
-emp_options = list(range(len(emp_display)))
-emp = st.selectbox("Travailleur independant", emp_options,
-                   format_func=lambda x: emp_display[x])
+    if "password_correct" not in st.session_state:
+        # First run, show input for password.
+        st.text_input(
+            "Login", on_change=password_entered, key="login"
+        )
+        st.text_input(
+            "Password", type="password", on_change=password_entered, key="password"
+        )
+        return False
+    elif not st.session_state["password_correct"]:
+        # Password not correct, show input + error.
+        st.text_input(
+            "Login", on_change=password_entered, key="login"
+        )
+        st.text_input(
+            "Password", type="password", on_change=password_entered, key="password"
+        )
+        st.error("😕 Identifiants incorrects, veuillez réessayer")
+        return False
+    else:
+        # Password correct.
+        return True
 
-# # For Property status
-prop_display = ('Rural', 'Semi-Urban', 'Urban')
-prop_options = list(range(len(prop_display)))
-prop = st.selectbox("Zone d'habitation", prop_options,
-                    format_func=lambda x: prop_display[x])
+## Login ##
+if check_password():
 
-# # Applicant Monthly Income
-mon_income = float(st.number_input("Revenus demandeur", value=0))
+    ## Application ##
+    img1 = Image.open('image4.jpg')
+    img1 = img1.resize((600, 200))
+    st.image(img1, use_column_width=False)
 
-# Credit history
-credit_display = ('Yes', 'No')
-credit_hst_options = list(range(len(credit_display)))
-credit_hst = st.selectbox("Autre crédit en cours", credit_hst_options,
-                          format_func=lambda x: credit_display[x])
+    ## --- SELECTIONS DES DONNEES --- ## 
 
-# Co-Applicant Monthly Income
-co_mon_income = float(st.number_input("Revenues co-demandeur", value=0))
-# Loan AMount
-loan_amt = float(st.number_input("Montant du credit", value=0))
-# loan duration
-dur = float(st.number_input("Durée du credit", value=0))
+    # For gender
+    gen_display = ('Female', 'Male')
+    gen = st.selectbox("Genre", gen_display)
 
-# ## ----------------------------------------------------- ## 
+    # For Marital Status
+    mar_display = ('Yes', 'No')
+    mar = st.selectbox("Marrié", mar_display)
 
-# if st.button("Submit"):
-# #     ## --- TRAITEMENT DES DONNEES --- ##
-#     model = joblib.load('./models/clf_model.joblib')
-#     COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
-#     'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
-#     'Loan_Amount_Term', 'Credit_History', 'Property_Area'
-#     ]
-#     # dep = 3 if dep == "3+" else int(dep)
-#     df = pd.DataFrame(data=[[gen, mar, dep, edu, emp, mon_income, 
-#                             co_mon_income, loan_amt, dur, credit_display, prop]], columns=COLUMNS_NAMES)
+    # No of dependets
+    dep_display = ('0', '1', '2', '3+')
+    dep = st.selectbox("Nombre de salarié(s)", dep_display)
 
-#     # Process raw data
-#     data = cleaner(df)
-#     data_prcd = feature_encoder(data)
-    
-#     st.table(data_prcd)
+    # For edu
+    edu_display = ('Not Graduate', 'Graduate')
+    edu = st.selectbox("Education", edu_display)
 
-#     # Unit testing on first feature engineering model improvement exp run #
-#     # preds, probas = feature_engineering(X, y, lg_pipe)
-#     # ------------------------------ ##
-    
-# #     ## --- PREDICTION --- ##
-#     pred = model.predict(data_prcd)
-#     proba = model.predict_proba(data_prcd)
-    
-#     if not pred == 0:
-#         st.text(f"Le demandeur est eligble au credit avec un indicateur de confiance de {proba}")
-#     else:
-#         st.text(f"Le demandeur n'est pas eligble au credit avec un indicateur de confiance de {proba}")
+    # For emp status
+    emp_display = ('Yes', 'No')
+    emp = st.selectbox("Travailleur indépendant", emp_display)
 
+    # For Property status
+    prop_display = ('Rural', 'Semiurban', 'Urban')
+    prop = st.selectbox("Zone d'habitation", prop_display)
 
-if st.button("Submit"):
-    #     ## --- TRAITEMENT DES DONNEES --- ##
-    model = joblib.load('./models/clf_model.joblib')
-    COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
-    'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
-    'Loan_Amount_Term', 'Credit_History', 'Property_Area'
-    ]
-    # dep = 3 if dep == "3+" else int(dep)
-    df = pd.DataFrame(data=[[gen, mar, dep, edu, emp, mon_income, 
-                            co_mon_income, loan_amt, dur, credit_display, prop]], columns=COLUMNS_NAMES)
+    # Applicant Monthly Income
+    mon_income = float(st.number_input("Revenus demandeur", value=0))
 
-    st.write(df)
+    # Credit history
+    credit_hst_display = ('Yes', 'No')
+    credit_history = st.selectbox("Historique de crédit", credit_hst_display)         
 
-    
-    # Process raw data
-    data = cleaner(df)
-    st.write(type(data))
-    data_prcd = feature_encoder(data)
-    
-    st.write(type(data_prcd))
-    
-#     st.table(data_prcd)
+    # Co-Applicant Monthly Income
+    co_mon_income = float(st.number_input("Revenues co-demandeur", value=0))
 
-#     # Unit testing on first feature engineering model improvement exp run #
-#     # preds, probas = feature_engineering(X, y, lg_pipe)
-#     # ------------------------------ ##
-    
-# #     ## --- PREDICTION --- ##
-#     pred = model.predict(data_prcd)
-#     proba = model.predict_proba(data_prcd)
-    
-#     if not pred == 0:
-#         st.text(f"Le demandeur est eligble au credit avec un indicateur de confiance de {proba}")
-#     else:
-#         st.text(f"Le demandeur n'est pas eligble au credit avec un indicateur de confiance de {proba}")
+    # Loan AMount
+    loan_amt = float(st.number_input("Montant du credit", value=0))
 
+    # loan duration
+    dur = float(st.number_input("Durée du credit", value=0))
+
+    ## ----------------------------------------------------- ## 
+
+    if st.button("Demande de crédit"):
+        model = loading_model()
+
+        data = [gen, mar, dep, edu, emp, mon_income, 
+                co_mon_income, loan_amt, dur, credit_history, prop]
+
+        df = create_user_dataframe(data)
+        
+        ## --- PREDICTION --- ##
+        pred = model.predict(df)
+        proba = model.predict_proba(df)
+        proba_yes_class = round(proba[0][1], 2) * 100
+        proba_no_class = round(proba[0][0], 2) * 100
+
+        if pred == "Y":
+            st.success(f"Le demandeur est éligble au credit avec un indicateur de confiance de {int(proba_yes_class)} %")
+        else:
+            st.warning(f"Le demandeur n'est pas éligble au credit avec un indicateur de confiance de {int(proba_no_class)} %")
+        
+        # Ajout de la prédiction au tableau de l'utilisateur
+        df["LoanStatus"] = pred
+
+        # Télécharge la prediction
+        st.download_button("Télécharger les données d'utilisateur",
+                            df.to_csv(index=False).encode('utf-8'),
+                            "User_data.csv",
+                            "text/csv")
