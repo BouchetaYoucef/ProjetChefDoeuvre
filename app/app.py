@@ -13,7 +13,7 @@ def loading_model():
     model = pickle.load(infile)
     infile.close()
     return model
-  
+
 def create_user_dataframe(data):
         COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
                          'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
@@ -57,6 +57,7 @@ def check_password():
         st.text_input(
             "Password", type="password", on_change=password_entered, key="password"
         )
+    if st.button("Login"):
         st.error("😕 Identifiants incorrects, veuillez réessayer")
         return False
     else:
@@ -66,7 +67,7 @@ def check_password():
 
 ## Login ##
 if check_password():
- if st.button("Login"):
+
     ## Application ##
     img1 = Image.open('image4.jpg')
     img1 = img1.resize((600, 200))
