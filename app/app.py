@@ -57,13 +57,14 @@ def check_password():
         st.text_input(
             "Password", type="password", on_change=password_entered, key="password"
         )
-    if st.button("Login"):
+    # if st.button("Login"):
+        st.download_button("Login",index=False).encode('utf-8')
         st.error("😕 Identifiants incorrects, veuillez réessayer")
         return False
     else:
         # Password correct.
         return True
-    st.download_button("Login",index=False).encode('utf-8')
+    
 
 ## Login ##
 if check_password():
