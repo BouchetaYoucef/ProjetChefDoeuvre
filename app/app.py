@@ -13,10 +13,8 @@ def loading_model():
     model = pickle.load(infile)
     infile.close()
     return model
-
-if st.button("Login"):
-    
- def create_user_dataframe(data):
+  
+def create_user_dataframe(data):
         COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
                          'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
                          'Loan_Amount_Term', 'Credit_History', 'Property_Area']
@@ -67,8 +65,8 @@ def check_password():
     st.download_button("Login",index=False).encode('utf-8')
 
 ## Login ##
-if check_password():
-
+# if check_password():
+if st.button("Login"):
     ## Application ##
     img1 = Image.open('image4.jpg')
     img1 = img1.resize((600, 200))
