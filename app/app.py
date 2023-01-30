@@ -7,8 +7,10 @@ import pandas as pd
 valid_login = st.secrets["VALID_LOGIN"]
 valid_password = st.secrets["VALID_PASSWORD"]
 
+if st.button("Demande de crédit"):
+                
 ## Fonctions ##
-def loading_model():
+ def loading_model():
     infile = open('./model.pkl','rb')
     model = pickle.load(infile)
     infile.close()
