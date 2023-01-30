@@ -99,9 +99,7 @@ if check_password():
     prop = st.selectbox("Zone d'habitation", prop_display)
 
     # Applicant Monthly Income
-    # mon_income = float(st.number_input("Revenus demandeur", value=0))
-    mon_income = ('150,4000,200')
-    mon_income = st.selectbox("Revenus demandeur", prop_display)
+    mon_income = float(st.number_input("Revenus demandeur", value=0))
     
     # Credit history
     credit_hst_display = ('Yes', 'No')
