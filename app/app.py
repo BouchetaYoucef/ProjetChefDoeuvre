@@ -65,8 +65,8 @@ def check_password():
     st.download_button("Login",index=False).encode('utf-8')
 
 ## Login ##
-# if check_password():
-if st.button("Login"):
+if check_password():
+ if st.button("Login"):
     ## Application ##
     img1 = Image.open('image4.jpg')
     img1 = img1.resize((600, 200))
