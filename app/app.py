@@ -6,17 +6,17 @@ import pandas as pd
 ## Variables d'environnement (secrets sur streamlit cloud) ##
 valid_login = st.secrets["VALID_LOGIN"]
 valid_password = st.secrets["VALID_PASSWORD"]
-
-if st.button("Demande de crédit"):
                 
 ## Fonctions ##
- def loading_model():
+def loading_model():
     infile = open('./model.pkl','rb')
     model = pickle.load(infile)
     infile.close()
     return model
 
-def create_user_dataframe(data):
+if st.button("Login"):
+    
+ def create_user_dataframe(data):
         COLUMNS_NAMES = ['Gender', 'Married', 'Dependents', 'Education',
                          'Self_Employed', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
                          'Loan_Amount_Term', 'Credit_History', 'Property_Area']
