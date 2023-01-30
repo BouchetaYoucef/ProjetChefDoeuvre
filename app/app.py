@@ -6,7 +6,7 @@ import pandas as pd
 ## Variables d'environnement (secrets sur streamlit cloud) ##
 valid_login = st.secrets["VALID_LOGIN"]
 valid_password = st.secrets["VALID_PASSWORD"]
-                
+
 ## Fonctions ##
 def loading_model():
     infile = open('./model.pkl','rb')
@@ -57,22 +57,21 @@ def check_password():
         st.text_input(
             "Password", type="password", on_change=password_entered, key="password"
         )
-    # if st.button("Login"):
-        st.download_button("Login",index=False).encode('utf-8')
+        
         st.error("😕 Identifiants incorrects, veuillez réessayer")
         return False
     else:
         # Password correct.
         return True
-    
+
 
 ## Login ##
 if check_password():
 
     ## Application ##
-    # img1 = Image.open('image4.jpg')
-    # img1 = img1.resize((600, 200))
-    # st.image(img1, use_column_width=False)
+    img1 = Image.open('image4.jpg')
+    img1 = img1.resize((600, 200))
+    st.image(img1, use_column_width=False)
 
     ## --- SELECTIONS DES DONNEES --- ## 
 
@@ -86,7 +85,7 @@ if check_password():
 
     # No of dependets
     dep_display = ('0', '1', '2', '3+')
-    dep = st.selectbox("Nombre d'enfant(s)", dep_display)
+    dep = st.selectbox("Nombre de salarié(s)", dep_display)
 
     # For edu
     edu_display = ('Not Graduate', 'Graduate')
@@ -102,7 +101,7 @@ if check_password():
 
     # Applicant Monthly Income
     mon_income = float(st.number_input("Revenus demandeur", value=0))
-    
+
     # Credit history
     credit_hst_display = ('Yes', 'No')
     credit_history = st.selectbox("Historique de crédit", credit_hst_display)         
