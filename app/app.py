@@ -61,8 +61,9 @@ def check_password():
         return False
     else:
         # Password correct.
+        st.download_button("Login",index=False).encode('utf-8')
         return True
-    st.download_button("Login",index=False).encode('utf-8')
+    
 
 ## Login ##
 if check_password():
@@ -99,8 +100,10 @@ if check_password():
     prop = st.selectbox("Zone d'habitation", prop_display)
 
     # Applicant Monthly Income
-    # mon_income = float(st.number_input("Revenus demandeur", value=0))
-    mon_income=st.sidebar.slider('Salaire du client',150,4000,200)
+    # mon_income = float(st.number_input("Revenus demandeur",150,4000,200 value=0))
+    # mon_income=st.sidebar.slider('Salaire du client',150,4000,200)
+    mon_income = ('150,4000,200')
+    mon_income = st.selectbox("Revenus demandeur", prop_display)
 
     # Credit history
     credit_hst_display = ('Yes', 'No')
